@@ -17,7 +17,7 @@ ws.addEventListener("message", ({data}) => {
 function eventRaised(value, type) { 
     console.log("Event Raised");
 
-    var text = '{ "time"  : "2021-05-28T16:23:37.98384+05:30",'
+    var text = '{ "time"  : "' + new Date() + '",'
              + '  "value" : "' + value + '",'
              + '  "type"  : "' + type + '",'
              + '  "userName" : "AUTOI"' 

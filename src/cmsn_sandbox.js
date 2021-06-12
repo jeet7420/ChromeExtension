@@ -1,6 +1,6 @@
 // 'use strict';
 
- import * as Enum from './cmsn_enum.js';
+//import * as Enum from './cmsn_enum.js';
 
 // Global Variable
 const DevicePtrMap = new Map(); // (uuid: string, devicePtr)
