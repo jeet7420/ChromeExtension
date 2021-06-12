@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src "self" "wasm-unsafe-eval";"> -->
+  <style>
+    .setup_btn {
+      text-align: center;
+      background: rgb(71, 148, 71);
+      color: #000;
+      padding: 10px;
+      margin: 10px;
+      font-size: 20px;
+      border-radius: 4px;
+      box-shadow: 4px 2px 10px #999;
+    }
+
+    .setup_btn:active {
+      opacity: .7;
+      box-shadow: 4px 2px 10px #555;
+    }
+
+    .btn {
+      text-align: center;
+      background: #eee;
+      color: #000;
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      box-shadow: 4px 2px 10px #999;
+    }
+
+    .btn:active {
+      opacity: .7;
+      box-shadow: 4px 2px 10px #555;
+    }
+
+    .content {
+      text-align: center;
+      color: #000;
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="content">Please Click 'Setup' Button to continue.</p>
+  <div id="setup" class="setup_btn">Setup</div>
+  <p id="connectivity" class="content">connectivity: unkown</p>
+  <p id="deviceInfo" class="content">deviceInfo: unkown</p>
+  <p class="content">when first time connect, switch LED to flashing fast then click 'pair' Button to continue</p>
+  <p class="content">otherwise switch LED to flashing normal, click 'checkPairingStatus' Button to continue</p>
+  <div id="page"></div>
+  <p id="contactState" class="content">contactState: unkown</p>
+  <p id="attention" class="content">attention: unkown</p>
+  <p id="meditation" class="content">meditation: unkown</p>
+  <iframe id="sandboxFrame" src="sandbox.html" hidden=true></iframe>
+  <script src="example.js" type="module"></script>
+  <button type="button" id="btn-event" onclick="eventRaised()">Raise Event</button>
+</body>
+
+
+</html>

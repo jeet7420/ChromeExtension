@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  },
+  "name": "Crimson Example",
+  "short_name": "Crimson",
+  "version": "1.0",
+  "description": "Crimson SDK For Chrome Extension",
+  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "sandbox": {
+    "pages": ["sandbox.html"]
+  },
+  "options_page": "example.html",
+  "page_action": {
+    "default_icon": "icon.png",
+    "default_title": "Title",
+    "default_popup": "example.html"
+  },
+  "web_accessible_resources": [
+      "dist/*"
+  ]
+}
