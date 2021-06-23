@@ -152,3 +152,9 @@ const device = new sdk.CMSNDevice(window);
 //  });
 
 addExampleButtons();
+
+/** Close btn */
+
+document.getElementById('close-btn').addEventListener('click', ()=>{
+    chrome.runtime.sendMessage('toggle');
+});

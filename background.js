@@ -1,8 +1,10 @@
+// @ts-check
 // import * as example from './example.js';
 
 console.log("Background Active");
 
-chrome.browserAction.onClicked.addListener(buttonClicked);
+
+// chrome.browserAction.onClicked.addListener(buttonClicked);
 
 function buttonClicked(tab) {
     console.log('background js event fired');
@@ -16,3 +18,10 @@ window.addEventListener('message', event => {
 function scanBluetooth() {
     console.log("Inside Background JS");
 }
+
+chrome.browserAction.onClicked.addListener(buttonClicked);
+chrome.runtime.onMessage.addListener((msg, sender)=>{
+    if(msg === 'toggle'){
+        buttonClicked(sender.tab);
+    }
+});
