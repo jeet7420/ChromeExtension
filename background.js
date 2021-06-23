@@ -38,7 +38,11 @@ function handleBluetoothEvent(data){
 }
 
 chrome.browserAction.onClicked.addListener(buttonClicked);
-chrome.runtime.onMessage.addListener(({type, payload}, sender)=>{
+const storageKey = 'history';
+
+const notifyAll = (type, payload) => chrome.tabs.query({}, list=>list.forEach(({id})=>chrome.tabs.sendMessage(id, {type, payload})));
+
+chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
     console.log("Message received",{type, payload});
     if(type === 'toggle'){
         buttonClicked(sender.tab);
@@ -50,11 +54,36 @@ chrome.runtime.onMessage.addListener(({type, payload}, sender)=>{
         chrome.tabs.sendMessage(sender.tab.id,{type});
     }
     if(type === 'device-connected'){
-        const storageKey = 'history';
         chrome.storage.local.get([storageKey], (result)=>{
             const currentHistory = result && result[storageKey] ? JSON.parse(result[storageKey]) : {};
-            currentHistory[payload.id] = payload;
+            currentHistory[payload.id] = {
+                ...payload,
+                at: +new Date()
+            };
+            chrome.storage.local.set({[storageKey]: JSON.stringify(currentHistory)});
+        });
+        notifyAll(type, payload);
+    }
+    if(type === 'remove-previous-device'){
+        chrome.storage.local.get([storageKey], (result)=>{
+            const currentHistory = result && result[storageKey] ? JSON.parse(result[storageKey]) : {};
+            if(currentHistory[payload]){
+                delete currentHistory[payload];
+            }
             chrome.storage.local.set({[storageKey]: JSON.stringify(currentHistory)});
         });
     }
+    if(type === 'get-previous-devices'){
+        chrome.storage.local.get([storageKey], (result)=>{
+            const currentHistory = result && result[storageKey] ? JSON.parse(result[storageKey]) : {};
+            response(Object.values(currentHistory))
+        });
+        return true;
+    }
+});
+
+chrome.storage.onChanged.addListener(({history})=>{
+    console.log('History changed', history.newValue);
+    const newData = JSON.parse(history.newValue || '{}');
+    notifyAll('update-device-list', Object.values(newData));
 });
