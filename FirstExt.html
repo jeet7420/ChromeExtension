@@ -23,7 +23,7 @@
             <img src='./images//brainLogo.svg' alt="Home" />
             <img src='./images/cancel.svg' alt="Close" id="close-btn" />
           </header>
-          <main>
+          <main id="screen-1" class="screen active">
             <img src='./images/brainbandlady.svg' alt="Brain Band Demo" />
             <div class="ext-content-1">
               <div class="rightbox">
@@ -72,7 +72,69 @@
               <img src='./images/white-bluetooth.svg' />
               Scan for bluetooh devices
             </button>
-            <p class="ext-content-1-link">Show previous devices</p>
+            <p class="ext-content-1-link" data-navigate="screen-3">Show previous devices</p>
+          </main>
+          <main id="screen-2" class="screen">
+            <img src='./images/brainDevice.svg' alt="Brain Band" />
+            <div class="ext-content-2">
+              <div>
+                <p>Device ID</p>
+                <p>60445832</p>
+              </div>
+              <div>
+                <p>Frimware version </p>
+                <p>1.17.30</p>
+              </div>
+              <div>
+                <p>Battery status </p>
+                <p>
+                  50% <img src='./images/battery.svg' alt="Battery Percentage" />
+                </p>
+              </div>
+              <div>
+                <p>Status of connictivity </p>
+                <p>
+                  Connected 
+                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="4" cy="4" r="2" fill="#0ABD80"/>
+                    <circle cx="4" cy="4" r="3.5" stroke="#0ABD80"/>
+                  </svg>
+                </p>
+              </div>
+            </div>
+            <button class="ext-content-2-btn">Disconnect</button>
+          </main>
+          <main id="screen-3" class="screen">
+            <img src='./images/brainDevice.svg' alt="Brain Band" />
+            <div class="ext-content-3">
+              <h1>Previously connected devices</h1>
+  
+              <div class="ext-3-inside">
+                  <div>
+                      <img src='./images/prevConnection.svg' alt=""/>
+                      <div>
+                          <p>Device 1</p>
+                          <li>Device Id 324324</li>
+                          <li>Last connected on 12 Jun 2021</li>
+                      </div>
+                      <h5>Connect</h5>
+                  </div>
+  
+                  <div>
+                      <img src='./images/prevConnection.svg' alt=""/>
+                      <div>
+                          <p>Device 2</p>
+                          <li>Device Id 324324</li>
+                          <li>Last connected on 12 Jun 2021</li>
+                      </div>
+                      <h5>Connect</h5>
+                  </div>
+              </div>
+            </div>
+            <div class="ext-3-btns">
+              <button class="ext-content-3-btn"> <img src='./images/white-bluetooth.svg' alt=""/> Pair a new device</button>
+              <li  data-navigate="screen-1">Learn how to connect </li>
+            </div>
           </main>
           <footer>
             <p>Terms and Conditions</p>

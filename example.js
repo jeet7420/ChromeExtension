@@ -158,3 +158,22 @@ addExampleButtons();
 document.getElementById('close-btn').addEventListener('click', ()=>{
     chrome.runtime.sendMessage('toggle');
 });
+
+/** Screen Navigation */
+
+function activateScreen(id){
+    document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+document.addEventListener('click', e=>{
+    try{
+        var target = e.target.dataset.navigate;
+        if(target){
+            e.preventDefault();
+            e.stopPropagation();
+            console.log({target});
+            activateScreen(target);
+        }
+    } catch(e){}
+});

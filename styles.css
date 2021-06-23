@@ -9,6 +9,12 @@
 :root{
   font-size: 10px;
 }
+.extension-container .screen{
+  display: none;
+}
+.extension-container .screen.active{
+  display: flex;
+}
 .extension {
     position: absolute;
     top: 0;
