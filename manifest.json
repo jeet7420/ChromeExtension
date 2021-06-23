@@ -29,6 +29,6 @@
   "browser_action": {},
   "web_accessible_resources": [
       "dist/*",
-      "FirstExt.html"
+      "iframe.html"
   ]
 }

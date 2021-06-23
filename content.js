@@ -17,32 +17,25 @@ function gotMessage({type, payload}, sender, senderResponse){
 
 var iframe = document.createElement('iframe'); 
 iframe.id = "brain_band_frame";
-iframe.style.height = "100vh";
-iframe.style.width = "23vw";
+iframe.style.height = "720px";
+iframe.style.width = "320px";
 iframe.style.position = "fixed";
 iframe.style.top = "0px";
 iframe.style.right = "0px";
-iframe.style.marginLeft = "0px";
-iframe.style.marginRight = "0px";
-iframe.style.marginTop = "0px";
-iframe.style.marginBottom = "0px";
-iframe.style.paddingLeft = "0px";
-iframe.style.paddingRight = "0px";
-iframe.style.paddingTop = "0px";
-iframe.style.paddingBottom = "0px";
+iframe.style.margin = "0px";
+iframe.style.padding = "0px";
 iframe.style.zIndex = "9000000000000000000";
 iframe.style.border = "0px"; 
-iframe.src = chrome.extension.getURL("FirstExt.html");
+iframe.src = chrome.extension.getURL("iframe.html");
 iframe.allowFullscreen = true;
 iframe.style.overflow = "hidden";
-iframe.style.paddingRight="0"
-iframe.style.margin="0";
 iframe.style.display = "block";
 iframe.style.overflowX = "hidden";
 iframe.style.overflowY = "auto";
 iframe.style.border = "none";
 iframe.style.transform = "translate(100%)";
 iframe.style.transition = "transform linear .3s";
+iframe.style.borderRadius = '6px';
 
 document.body.appendChild(iframe);
 
