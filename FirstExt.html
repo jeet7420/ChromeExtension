@@ -1,12 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="FirstExtHTML">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>extension 1</title>
     <link rel="stylesheet" href="./styles.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
+
+<style>
+  body {
+      width: 1200vw;
+      height: 20000vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: hidden;
+  }
+</style>
 <body>
+  <!-- <script type="module" src="./extension.js"></script> -->
+  <script type="module" src="./example.js"></script>
     <div class="extension">
         <div class="extension-container"> 
           <header>
@@ -57,7 +74,8 @@
                 </div>
               </div>
             </div>
-            <button class="ext-content-1-btn">
+            <div id="TestDiv"></div>
+            <button class="ext-content-1-btn" id="btn-scan-bluetooth">
               <img src='./images/white-bluetooth.svg' />
               Scan for bluetooh devices
             </button>
@@ -73,5 +91,6 @@
           </footer>
         </div>
       </div>
+      <iframe id="sandboxFrame" src="sandbox.html" hidden=true></iframe>
 </body>
 </html>

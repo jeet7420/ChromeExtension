@@ -59,25 +59,33 @@ export class CMSNDevice {
             }
 
             console.log('Requesting any Bluetooth Device...');
-            const bleDevice = await navigator.bluetooth.requestDevice({
-                //acceptAllDevices: true,
-                filters: [{
-                    services: [data_stream_service_uuid]
-                }],
-                optionalServices: ['battery_service', 'device_information', data_stream_service_uuid]
+
+            let options = {acceptAllDevices: true};
+
+            navigator.bluetooth.requestDevice(options).then(function(device) {
+                console.log('Name: ' + device.name);
             });
-            if (bleDevice) {
-                console.log(bleDevice);
-                this.bleDevice = bleDevice;
-                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
-                // await this.bleDevice.gatt.connect();
-                this.uuid = bleDevice.id;
-                this.name = bleDevice.name;
-                console.log(`uuid=${this.uuid}, name=${this.name}`)
-                DeviceMap.set(this.uuid, this);
-                globalDevice = this;
-                await this.connect();
-            }
+
+
+            // const bleDevice = await navigator.bluetooth.requestDevice({
+            //     acceptAllDevices: true,
+            //     filters: [{
+            //         services: [data_stream_service_uuid]
+            //     }],
+            //     optionalServices: ['battery_service', 'device_information', data_stream_service_uuid]
+            // });
+            // if (bleDevice) {
+            //     console.log(bleDevice);
+            //     this.bleDevice = bleDevice;
+            //     bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+            //     // await this.bleDevice.gatt.connect();
+            //     this.uuid = bleDevice.id;
+            //     this.name = bleDevice.name;
+            //     console.log(`uuid=${this.uuid}, name=${this.name}`)
+            //     DeviceMap.set(this.uuid, this);
+            //     globalDevice = this;
+            //     await this.connect();
+            // }
 
         } catch (error) {
             console.log('Argh! ' + error);

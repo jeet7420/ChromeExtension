@@ -10,17 +10,27 @@
   "short_name": "Crimson",
   "version": "1.0",
   "description": "Crimson SDK For Chrome Extension",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "https://*/"],
   "sandbox": {
     "pages": ["sandbox.html"]
   },
   "options_page": "example.html",
-  "page_action": {
-    "default_icon": "icon.png",
-    "default_title": "Title",
-    "default_popup": "example.html"
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_popup": "./FirstExt.html"
   },
   "web_accessible_resources": [
-      "dist/*"
+      "dist/*",
+      "FirstExt.html"
   ]
 }
