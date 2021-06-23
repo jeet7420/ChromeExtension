@@ -61,10 +61,12 @@ export class CMSNDevice {
             console.log('Requesting any Bluetooth Device...');
 
             let options = {acceptAllDevices: true};
-
-            navigator.bluetooth.requestDevice(options).then(function(device) {
-                console.log('Name: ' + device.name);
-            });
+            const device = await navigator.bluetooth.requestDevice(options);
+            return device;
+            // navigator.bluetooth.requestDevice(options).then(function(device) {
+            //     console.log({device});
+            //     console.log('Name: ' + device.name);
+            // });
 
 
             // const bleDevice = await navigator.bluetooth.requestDevice({
@@ -286,10 +288,10 @@ export class CMSNDevice {
 
 window.addEventListener('message', async function (event) {
     const command = event.data.command;
-    const params = event.data.params;
+    const params = event.data.params || {};
     // console.debug(`getMessage, command=${command}`);
     // console.debug(`getMessage, params=${JSON.stringify(params)}`);
-
+    
     // TODO
     const deviceId = params.deviceId;
     const device = DeviceMap.get(deviceId);

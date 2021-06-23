@@ -1,11 +1,18 @@
+// @ts-check
+
+import * as sdk from './src/cmsn_sdk.js';
+
+
 chrome.runtime.onMessage.addListener(gotMessage);
 
-function gotMessage(request, sender, senderResponse){
-    console.log('content script js event fired');
-    console.log(request);
-    if(request === 'toggle'){
+function gotMessage({type, payload}, sender, senderResponse){
+    if(type === 'toggle'){
         toggle();
     }
+    if(type === 'connect-new'){
+        connectNew();
+    }
+
 }
 
 var iframe = document.createElement('iframe'); 
@@ -26,12 +33,7 @@ iframe.style.paddingBottom = "0px";
 iframe.style.zIndex = "9000000000000000000";
 iframe.style.border = "0px"; 
 iframe.src = chrome.extension.getURL("FirstExt.html");
-// iframe.src = "FirstExt.html";
 iframe.allowFullscreen = true;
-iframe.marginBottom = "0";
-iframe.marginLeft = "0";
-iframe.marginRight = "0";
-iframe.marginTop = "0";
 iframe.style.overflow = "hidden";
 iframe.style.paddingRight="0"
 iframe.style.margin="0";
@@ -41,9 +43,6 @@ iframe.style.overflowY = "auto";
 iframe.style.border = "none";
 iframe.style.transform = "translate(100%)";
 iframe.style.transition = "transform linear .3s";
-iframe.overflow = "auto";
-iframe.overflowX = "hidden";
-iframe.overflowY = "auto";
 
 document.body.appendChild(iframe);
 
@@ -55,26 +54,61 @@ function toggle(){
     } else {
         iframe.style.transform = "translate(0%)";
     }
-    console.log({expanded});
     expanded = !expanded;
-    // console.log('inside toggle');
-    // if(iframe.style.width == "0%"){
-    //     console.log("Inside If");
-    //     iframe.style.width="23vw";
-    // }
-    // else{
-    //     console.log("Inside Else");
-    //     iframe.style.width="0";
-    // }
 }
 
-// var document1 = iframe.contentWindow.document;
-// console.log('Frame : ', document);
-// console.log('Frame 1 : ', document.getElementById("brain_band_frame"));
-// console.log('Frame 2 : ', document1.getElementById("btn-scan-bluetooth"));
-// document.getElementById("brain_band_frame").contentWindow.postMessage("");
+const broadcastBluetoothEvent = (event, data)=>{
+    chrome.runtime.sendMessage({type: 'bluetooth-event', payload: {event, data}})
+}
 
+const listeners = new sdk.CMSNDeviceListener({
+    onConnectivityChanged:(device, connectivity)=>{ //Connectivity
+        broadcastBluetoothEvent('onConnectivityChanged', {device, connectivity});
+    },
+    onDeviceInfoReady:   (device, deviceInfo)=>{  //deviceInfo
+        broadcastBluetoothEvent('onDeviceInfoReady', {device, deviceInfo});
+    },
+    onContactStateChanged: (device, contactState) => { //ContactState
+        broadcastBluetoothEvent('onContactStateChanged', {device, contactState});
+    },
+    onOrientationChanged: (device, orientation)=>{ //Orientation
+        broadcastBluetoothEvent('onOrientationChanged', {device, orientation});
+    },
+    onEEGData:           (_, eegData)=> {   //EEGData
+        broadcastBluetoothEvent('onEEGData', {eegData});
+    },
+    onBrainWave:           (_, stats)=> {   //BrainWave
+        broadcastBluetoothEvent('onBrainWave', {stats});
+    },
+    onIMUData:           (_, imuData)=> {   //IMUData
+        console.log("IMU data received:");
+        console.log(imuData); 
+        broadcastBluetoothEvent('onIMUData', {imuData});
+    },
+    onAttention:         (device, attention)=>{   //Float
+        broadcastBluetoothEvent('onAttention', {device, attention, type: 'Attention'});
+    },
+    onMeditation:        (device, meditation)=>{  //Float
+        broadcastBluetoothEvent('onAttention', {device, meditation, type: 'Meditation'});
+    },
+});
 
-// function scanBluetooth() {
-//     console.log("Inside Content JS");
-// }
+const device = new sdk.CMSNDevice(window);
+
+const connectNew = async ()=>{
+    try{
+        const connectedDevice = await device.setup(listeners);
+        if(connectedDevice && connectedDevice.id){
+            const {id, name} = connectedDevice;
+            console.log("Device setup done", connectedDevice);
+            const msg = {type: 'device-connected', payload: {id, name}};
+            chrome.runtime.sendMessage(msg);
+            iframe.contentWindow.postMessage(msg, '*')
+        } else {
+            throw new Error();
+        }
+
+    } catch(e){
+        console.log("Device setup failed", {e});
+    }    
+}
