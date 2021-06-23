@@ -5,7 +5,11 @@ import * as sdk from './src/cmsn_sdk.js';
 
 chrome.runtime.onMessage.addListener(gotMessage);
 
-function gotMessage({type, payload}, sender, senderResponse){
+/**
+ * Helper function to handle incoming message from background script
+ * @param {{type: string}} param0 
+ */
+function gotMessage({type}){
     if(type === 'toggle'){
         toggle();
     }
@@ -14,7 +18,9 @@ function gotMessage({type, payload}, sender, senderResponse){
     }
 
 }
-
+/**
+ * Iframe definition
+ */
 var iframe = document.createElement('iframe'); 
 iframe.id = "brain_band_frame";
 iframe.style.height = "720px";
@@ -40,7 +46,9 @@ iframe.style.borderRadius = '6px';
 document.body.appendChild(iframe);
 
 let expanded = false;
-
+/**
+ * Helper function to toggle iframe
+ */
 function toggle(){
     if(expanded){
         iframe.style.transform = "translate(100%)";
@@ -50,9 +58,18 @@ function toggle(){
     expanded = !expanded;
 }
 
+/**
+ * Helper function to broadcast bluetooth events to background script
+ * @param {string} event 
+ * @param {any} data 
+ */
 const broadcastBluetoothEvent = (event, data)=>{
     chrome.runtime.sendMessage({type: 'bluetooth-event', payload: {event, data}})
 }
+
+/**
+ * Here we listen to all events from SDK and broadcast that event to background script
+ */
 
 const listeners = new sdk.CMSNDeviceListener({
     onConnectivityChanged:(device, connectivity)=>{ //Connectivity
@@ -92,6 +109,10 @@ const connectNew = async ()=>{
     try{
         const connectedDevice = await device.setup(listeners);
         if(connectedDevice && connectedDevice.id){
+            /**
+             * We can't pass the whole connectedDevice object due to browser limitation (native code/security)
+             * So, we take the id and name only
+             */
             const {id, name} = connectedDevice;
             console.log("Device setup done", connectedDevice);
             const msg = {type: 'device-connected', payload: {id, name}};

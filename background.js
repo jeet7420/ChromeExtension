@@ -1,22 +1,8 @@
 // @ts-check
-// import * as example from './example.js';
-
-console.log("Background Active");
-
-
-// chrome.browserAction.onClicked.addListener(buttonClicked);
 
 function buttonClicked(tab) {
     console.log('background js event fired');
     chrome.tabs.sendMessage(tab.id,{type: "toggle"});
-}
-
-window.addEventListener('message', event => {
-    console.log("Background Event Received : " , event);
-});
-
-function scanBluetooth() {
-    console.log("Inside Background JS");
 }
 
  
@@ -32,6 +18,11 @@ function eventRaised(value, type) {
     //ws.send(text);
 }
 
+/**
+ * This handleBluetoothEvent method should receive all bluetooth related events from content.js
+ * Check listener object in content.js for list of events it may receive 
+ * @param {{type: string, payload?: any}} data
+ */
 function handleBluetoothEvent(data){
     console.log("Handling bluetooth event", {data});
     console.log({data});
@@ -40,6 +31,12 @@ function handleBluetoothEvent(data){
 chrome.browserAction.onClicked.addListener(buttonClicked);
 const storageKey = 'history';
 
+/**
+ * Helper function to notify all tabs
+ * @param {string} type 
+ * @param {any} payload 
+ * @returns 
+ */
 const notifyAll = (type, payload) => chrome.tabs.query({}, list=>list.forEach(({id})=>chrome.tabs.sendMessage(id, {type, payload})));
 
 chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
@@ -62,6 +59,7 @@ chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
             };
             chrome.storage.local.set({[storageKey]: JSON.stringify(currentHistory)});
         });
+        // notifying all tabs so that the extension screens are synced
         notifyAll(type, payload);
     }
     if(type === 'remove-previous-device'){
@@ -78,7 +76,7 @@ chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
             const currentHistory = result && result[storageKey] ? JSON.parse(result[storageKey]) : {};
             response(Object.values(currentHistory))
         });
-        return true;
+        return true; // return true indicates the response is async
     }
 });
 

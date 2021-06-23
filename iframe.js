@@ -4,7 +4,14 @@ document.getElementById('close-btn').addEventListener('click', ()=>{
     chrome.runtime.sendMessage({type: 'toggle'});
 });
 
-/** Screen Navigation */
+/**
+ * Screen Navigation
+ *  
+ * Any html element with data-navigate="SCREEN_ID" would work as navigator
+ * SCREEN_ID denotes the id of the screen
+ * Here, we have 3 screens (screen-1, screen-2, screen-3)
+ * 
+ * */
 
 function activateScreen(id){
     document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
@@ -40,25 +47,32 @@ chrome.runtime.onMessage.addListener(({type, payload})=>{
     }
 });
 
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+/**
+ * A helper function to convert timestamp to readable date
+ * @param {?number} timestamp 
+ * @returns {string} 
+ */
 
 function getReadableDate(timestamp){
     if(!timestamp){
         return 'undefined';
     }
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date(timestamp);
     return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 }
 
+/**
+ * Helper function to update device list
+ * @param {{id: string, name: string, at?: number}[]} devices 
+ */
+
 function updateDeviceList(devices){
-    console.log(devices);
     const container =  document.getElementById('device-history');
     if(!(Array.isArray(devices) && devices.length > 0)){
         container.innerHTML = `<p>No device found</p>`;
     } else {
-        container.innerHTML = devices.map((each, index)=>`
+        container.innerHTML = devices.map((each)=>`
                     <div>
                       <img data-remove-device="${each.id}" src='./images/prevConnection.svg' alt=""/>
                       <div>
@@ -72,6 +86,9 @@ function updateDeviceList(devices){
     }
 }
 
+/**
+ * Device remove function by clicking (-) icon
+ */
 chrome.runtime.sendMessage({type: 'get-previous-devices'}, updateDeviceList);
 
 document.addEventListener('click', e=>{
