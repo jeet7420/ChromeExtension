@@ -45,7 +45,7 @@ const storageKey = 'history';
 /**
  * Helper function to notify all tabs
  * @param {string} type 
- * @param {any} payload 
+ * @param {any} [payload] 
  * @returns 
  */
 const notifyAll = (type, payload) => chrome.tabs.query({}, list=>list.forEach(({id})=>chrome.tabs.sendMessage(id, {type, payload})));
