@@ -29,6 +29,7 @@
   "browser_action": {},
   "web_accessible_resources": [
       "dist/*",
-      "iframe.html"
+      "iframe.html",
+      "sandbox.html"
   ]
 }

@@ -32,4 +32,8 @@
      //fnAddScript();
      fnAddButtons();
      fnDefineEvents();
+
+     addEventListener('onmessage', () => {
+        
+     })
  })();

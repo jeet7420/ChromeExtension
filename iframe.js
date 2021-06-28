@@ -37,6 +37,19 @@ document.getElementById('btn-scan-bluetooth').addEventListener('click', (e)=>{
     chrome.runtime.sendMessage({type: 'connect-new'});
 });
 
+document.getElementById('btn-pair').addEventListener('click', (e)=>{
+    console.log('Pair Request');
+    e.preventDefault();
+    e.stopPropagation();
+    chrome.runtime.sendMessage({type: 'pair'});
+});
+
+document.getElementById('pair-new-device').addEventListener('click', (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    chrome.runtime.sendMessage({type: 'connect-new'});
+});
+
 /** Listen to device connected event */
 chrome.runtime.onMessage.addListener(({type, payload})=>{
     if(type === 'device-connected'){
@@ -101,3 +114,7 @@ document.addEventListener('click', e=>{
         }
     } catch(e){}
 });
+
+// const window = document.getElementById('sandboxFrame').contentWindow;
+
+// chrome.runtime.sendMessage({type: 'window', payload: window});

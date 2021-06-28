@@ -38,7 +38,9 @@
     "callsites": "^2.0.0",
     "kafka-client": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.145"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "contentjs:dev": "npx parcel serve content.js -- --no-hm --no-minify",

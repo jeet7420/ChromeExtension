@@ -16,7 +16,10 @@ function gotMessage({type}){
     if(type === 'connect-new'){
         connectNew();
     }
-
+    if(type === 'pair'){
+        console.log('Pair Request Content JS');
+        device.pair(true);
+    }
 }
 /**
  * Iframe definition
@@ -45,6 +48,13 @@ iframe.style.borderRadius = '6px';
 
 document.body.appendChild(iframe);
 
+var sandboxFrame = document.createElement('iframe');
+sandboxFrame.src = chrome.extension.getURL("sandbox.html");
+sandboxFrame.style.visibility = "hidden";
+sandboxFrame.style.display = "none";
+
+document.body.appendChild(sandboxFrame);
+
 let expanded = false;
 /**
  * Helper function to toggle iframe
@@ -64,6 +74,8 @@ function toggle(){
  * @param {any} data 
  */
 const broadcastBluetoothEvent = (event, data)=>{
+    console.log('Event : ', event);
+    console.log('Data : ', data);
     chrome.runtime.sendMessage({type: 'bluetooth-event', payload: {event, data}})
 }
 
@@ -73,21 +85,30 @@ const broadcastBluetoothEvent = (event, data)=>{
 
 const listeners = new sdk.CMSNDeviceListener({
     onConnectivityChanged:(device, connectivity)=>{ //Connectivity
-        broadcastBluetoothEvent('onConnectivityChanged', {device, connectivity});
+        let deviceDetails = {name: device.name, uuid: device.uuid};
+        console.log('Connectivity Changed');
+        broadcastBluetoothEvent('onConnectivityChanged', deviceDetails);
     },
     onDeviceInfoReady:   (device, deviceInfo)=>{  //deviceInfo
-        broadcastBluetoothEvent('onDeviceInfoReady', {device, deviceInfo});
+        console.log('Device Info');
+        let deviceInfoDetails = {batteryLevel: device.batteryLevel, deviceInfo: deviceInfo};
+        broadcastBluetoothEvent('onDeviceInfoReady', deviceInfoDetails);
+        //broadcastBluetoothEvent('onDeviceInfoReady123', "Test Device Info Data");
     },
     onContactStateChanged: (device, contactState) => { //ContactState
-        broadcastBluetoothEvent('onContactStateChanged', {device, contactState});
+        console.log('Contact State Changed');
+        broadcastBluetoothEvent('onContactStateChanged', {contactState});
     },
     onOrientationChanged: (device, orientation)=>{ //Orientation
-        broadcastBluetoothEvent('onOrientationChanged', {device, orientation});
+        console.log('Orientation Changed');
+        broadcastBluetoothEvent('onOrientationChanged', {orientation});
     },
     onEEGData:           (_, eegData)=> {   //EEGData
+        console.log('EEG Data');
         broadcastBluetoothEvent('onEEGData', {eegData});
     },
     onBrainWave:           (_, stats)=> {   //BrainWave
+        console.log('Brain Wave');
         broadcastBluetoothEvent('onBrainWave', {stats});
     },
     onIMUData:           (_, imuData)=> {   //IMUData
@@ -96,13 +117,16 @@ const listeners = new sdk.CMSNDeviceListener({
         broadcastBluetoothEvent('onIMUData', {imuData});
     },
     onAttention:         (device, attention)=>{   //Float
-        broadcastBluetoothEvent('onAttention', {device, attention, type: 'Attention'});
+        console.log('Attention Changed');
+        broadcastBluetoothEvent('onAttention', {attention, type: 'Attention'});
     },
     onMeditation:        (device, meditation)=>{  //Float
-        broadcastBluetoothEvent('onAttention', {device, meditation, type: 'Meditation'});
+        console.log('Medidation Changed');
+        broadcastBluetoothEvent('onAttention', {meditation, type: 'Meditation'});
     },
 });
 
+const window = sandboxFrame.contentWindow;
 const device = new sdk.CMSNDevice(window);
 
 const connectNew = async ()=>{
@@ -117,7 +141,9 @@ const connectNew = async ()=>{
             console.log("Device setup done", connectedDevice);
             const msg = {type: 'device-connected', payload: {id, name}};
             chrome.runtime.sendMessage(msg);
-            iframe.contentWindow.postMessage(msg, '*')
+            iframe.contentWindow.postMessage(msg, '*');
+            //device.pair(true);
+            //window.postMessage('test message', `*`);
         } else {
             throw new Error();
         }

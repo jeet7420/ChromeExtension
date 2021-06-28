@@ -1,5 +1,16 @@
 // @ts-check
 
+// const ws = new WebSocket("ws://localhost:8080");
+
+// ws.addEventListener("open", () => {
+//     console.log("Client Side Connection Established");
+// })
+
+// ws.addEventListener("message", ({data}) => {
+//     //console.log(data);
+// })
+
+
 function buttonClicked(tab) {
     console.log('background js event fired');
     chrome.tabs.sendMessage(tab.id,{type: "toggle"});
@@ -48,6 +59,9 @@ chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
         handleBluetoothEvent(payload);
     }
     if(type === 'connect-new'){
+        chrome.tabs.sendMessage(sender.tab.id,{type});
+    }
+    if(type === 'pair'){
         chrome.tabs.sendMessage(sender.tab.id,{type});
     }
     if(type === 'device-connected'){

@@ -72,6 +72,7 @@
               Scan for bluetooh devices
             </button>
             <p class="ext-content-1-link" data-navigate="screen-3">Show previous devices</p>
+            <iframe id="sandboxFrame" src="sandbox.html" hidden=true></iframe>
           </main>
           <main id="screen-2" class="screen">
             <img src='./images/brainDevice.svg' alt="Brain Band" />
@@ -102,6 +103,10 @@
               </div>
             </div>
             <button class="ext-content-2-btn" data-navigate="screen-1">Disconnect</button>
+            <button class="ext-content-1-btn" id="btn-pair">
+              Pair
+            </button>
+            <iframe id="sandboxFrame" src="sandbox.html" hidden=true></iframe>
           </main>
           <main id="screen-3" class="screen">
             <img src='./images/brainDevice.svg' alt="Brain Band" />
@@ -113,9 +118,10 @@
               </div>
             </div>
             <div class="ext-3-btns">
-              <button class="ext-content-3-btn"> <img src='./images/white-bluetooth.svg' alt=""/> Pair a new device</button>
+              <button class="ext-content-3-btn" id="pair-new-device"> <img src='./images/white-bluetooth.svg' alt=""/> Pair a new device</button>
               <li  data-navigate="screen-1">Learn how to connect </li>
             </div>
+            <iframe id="sandboxFrame" src="sandbox.html" hidden=true></iframe>
           </main>
           <footer>
             <p>Terms and Conditions</p>

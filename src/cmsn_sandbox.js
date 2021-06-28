@@ -58,9 +58,11 @@ let cmsn_sys_config_pack;
 
     // Set up message event handler:
     window.addEventListener('message', function (event) {
+        console.log('Window Event : ', event);
         shared_event = event;
 
         var context = event.data;
+        console.log('Window Context : ', context);
         // console.log(`context=${JSON.stringify(context)}`);
 
         var uuid = context.uuid;
@@ -68,8 +70,11 @@ let cmsn_sys_config_pack;
 
         var params = context.params;
         var command = context.command;
+        console.log('Window Params : ', params);
+        console.log('Window Command : ', command);
         if (command == 'didReceiveData') {
             const data = params.data;
+            console.log('Window Data : ', data);
             // console.log(data);
             if (devicePtr) cmsn_did_receive_data(devicePtr, data, data.length);
             return;
@@ -77,8 +82,8 @@ let cmsn_sys_config_pack;
             console.log(`invalid command=${command}`);
             return;
         }
-
         const cmd = params.cmd;
+        console.log('Window CMD : ', cmd);
         const cb = undefined;
         switch (cmd) {
             // case Enum.CMD.enum('pair'):

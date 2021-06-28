@@ -70,31 +70,31 @@ const exampleListener = new sdk.CMSNDeviceListener({
 });
 
 function addExampleButtons() {
-    let btnBTH = document.getElementById("btn-scan-bluetooth");
-    btnBTH.onclick = async function() {
-        console.log("************ Setup ************");
-        await device.setup(exampleListener);
-    };
-  
-    // let page = document.getElementById('page');
-    // let steupBtn = document.getElementById('setup');
-    // steupBtn.onclick = async function() {
+    // let btnBTH = document.getElementById("btn-scan-bluetooth");
+    // btnBTH.onclick = async function() {
     //     console.log("************ Setup ************");
     //     await device.setup(exampleListener);
     // };
+  
+    let page = document.getElementById('page');
+    let steupBtn = document.getElementById('setup');
+    steupBtn.onclick = async function() {
+        console.log("************ Setup ************");
+        await device.setup(exampleListener);
+    };
 
-    // let eventBtn = document.getElementById('btn-event');
-    // eventBtn.onclick = async function() {
-    //     eventRaised();
-    // };
+    let eventBtn = document.getElementById('btn-event');
+    eventBtn.onclick = async function() {
+        eventRaised();
+    };
 
-    // for (var i = 1; i <= 2; i++) {
-    //     let btn = document.createElement('div');
-    //     btn.setAttribute("class", 'btn');
-    //     btn.innerText = Enum.CMD(i);
-    //     btn.onclick = onClick(btn, i);
-    //     page.appendChild(btn);
-    // }
+    for (var i = 1; i <= 2; i++) {
+        let btn = document.createElement('div');
+        btn.setAttribute("class", 'btn');
+        btn.innerText = Enum.CMD(i);
+        btn.onclick = onClick(btn, i);
+        page.appendChild(btn);
+    }
 }
 
 function onClick(btn, i) {

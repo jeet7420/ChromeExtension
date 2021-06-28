@@ -224,6 +224,8 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+    height: 150px;
+    overflow: auto;
   }
    .ext-3-inside div{
      width: 100%;
