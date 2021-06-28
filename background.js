@@ -64,6 +64,10 @@ chrome.runtime.onMessage.addListener(({type, payload}, sender, response)=>{
     if(type === 'pair'){
         chrome.tabs.sendMessage(sender.tab.id,{type});
     }
+    if(type === 'disconnect'){
+        notifyAll('disconnect');
+        notifyAll('disconnected');
+    }
     if(type === 'device-connected'){
         chrome.storage.local.get([storageKey], (result)=>{
             const currentHistory = result && result[storageKey] ? JSON.parse(result[storageKey]) : {};

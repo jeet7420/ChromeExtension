@@ -16,6 +16,9 @@ function gotMessage({type}){
     if(type === 'connect-new'){
         connectNew();
     }
+    if(type === 'disconnect'){
+        disconnect();
+    }
     if(type === 'pair'){
         console.log('Pair Request Content JS');
         device.pair(true);
@@ -129,9 +132,23 @@ const listeners = new sdk.CMSNDeviceListener({
 const window = sandboxFrame.contentWindow;
 const device = new sdk.CMSNDevice(window);
 
+/**
+ * @type {BluetoothDevice}
+ */
+let connectedDevice;
+
+const disconnect = async ()=>{
+    if(connectedDevice){
+        try{
+            connectedDevice.gatt.disconnect();
+        } catch(e){}
+        connectedDevice = undefined;
+    }
+}
+
 const connectNew = async ()=>{
     try{
-        const connectedDevice = await device.setup(listeners);
+        connectedDevice = await device.setup(listeners);
         if(connectedDevice && connectedDevice.id){
             /**
              * We can't pass the whole connectedDevice object due to browser limitation (native code/security)

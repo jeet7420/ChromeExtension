@@ -50,10 +50,19 @@ document.getElementById('pair-new-device').addEventListener('click', (e)=>{
     chrome.runtime.sendMessage({type: 'connect-new'});
 });
 
+document.getElementById('btn-disconnect').addEventListener('click', (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    chrome.runtime.sendMessage({type: 'disconnect'});
+});
+
 /** Listen to device connected event */
 chrome.runtime.onMessage.addListener(({type, payload})=>{
     if(type === 'device-connected'){
         activateScreen('screen-2');
+    }
+    if(type === 'disconnected'){
+        activateScreen('screen-1');
     }
     if(type === 'update-device-list'){
         updateDeviceList(payload);
@@ -93,7 +102,7 @@ function updateDeviceList(devices){
                           <li>${each.id}</li>
                           <li>Last connected on ${getReadableDate(each.at)}</li>
                       </div>
-                      <h5>Connect</h5>
+                      <h5 data-connect='${JSON.stringify(each)}'>Connect</h5>
                   </div>
         `)
     }
@@ -118,3 +127,21 @@ document.addEventListener('click', e=>{
 // const window = document.getElementById('sandboxFrame').contentWindow;
 
 // chrome.runtime.sendMessage({type: 'window', payload: window});
+
+
+/**
+ * Connect button functionality
+ */
+
+ document.addEventListener('click', e=>{
+    try{
+        var deviceInfoRaw = e.target.dataset.connect;
+        if(deviceInfoRaw){
+            var device = JSON.parse(deviceInfoRaw);
+            console.log({device});
+            e.preventDefault();
+            e.stopPropagation();
+            alert(`Unable to connect ${JSON.stringify(deviceInfoRaw)}`)
+        }
+    } catch(e){}
+});

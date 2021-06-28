@@ -70,10 +70,10 @@ export class CMSNDevice {
 
 
             const bleDevice = await navigator.bluetooth.requestDevice({
-                //acceptAllDevices: true,
-                filters: [{
-                    services: [data_stream_service_uuid]
-                }],
+                acceptAllDevices: true,
+                // filters: [{
+                //     services: [data_stream_service_uuid]
+                // }],
                 optionalServices: ['battery_service', 'device_information', data_stream_service_uuid]
             });
             if (bleDevice) {
