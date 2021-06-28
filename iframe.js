@@ -102,7 +102,7 @@ function updateDeviceList(devices){
                           <li>${each.id}</li>
                           <li>Last connected on ${getReadableDate(each.at)}</li>
                       </div>
-                      <h5 data-connect='${JSON.stringify(each)}'>Connect</h5>
+                      <!--<h5 data-connect='${JSON.stringify(each)}'>Connect</h5>-->
                   </div>
         `)
     }

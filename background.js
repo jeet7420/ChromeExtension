@@ -32,11 +32,21 @@ function eventRaised(value, type) {
 /**
  * This handleBluetoothEvent method should receive all bluetooth related events from content.js
  * Check listener object in content.js for list of events it may receive 
- * @param {{type: string, payload?: any}} data
+ * @param {{event: string, data: any}} payload
  */
-function handleBluetoothEvent(data){
-    console.log("Handling bluetooth event", {data});
-    console.log({data});
+function handleBluetoothEvent(payload){
+    if(payload != null) {
+        if(payload.event == 'onAttention') {
+            let attentionValue = payload.data;
+            this.eventRaised(attentionValue, 'onAttention');
+        }
+        if(payload.event == 'onMeditation') {
+            let meditationValue = payload.data;
+            this.eventRaised(meditationValue, 'onMeditation');
+        }
+    }
+    console.log("Handling bluetooth event", {payload});
+    console.log({payload});
 }
 
 chrome.browserAction.onClicked.addListener(buttonClicked);

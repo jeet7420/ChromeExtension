@@ -367,9 +367,9 @@ function onDisconnected() {
         device.reset();
         this.connectivity = Enum.CONNECTIVITY.enum('disconnected');
         
-        setTimeout(() => {
-            device.connect(); // try reconnect
-        }, 1000);
+        // setTimeout(() => {
+        //     device.connect(); // try reconnect
+        // }, 1000);
     }  
 }
 

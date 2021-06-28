@@ -121,11 +121,11 @@ const listeners = new sdk.CMSNDeviceListener({
     },
     onAttention:         (device, attention)=>{   //Float
         console.log('Attention Changed');
-        broadcastBluetoothEvent('onAttention', {attention, type: 'Attention'});
+        broadcastBluetoothEvent('onAttention', attention);
     },
     onMeditation:        (device, meditation)=>{  //Float
         console.log('Medidation Changed');
-        broadcastBluetoothEvent('onAttention', {meditation, type: 'Meditation'});
+        broadcastBluetoothEvent('onMeditation', meditation);
     },
 });
 
