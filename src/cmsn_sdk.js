@@ -44,9 +44,23 @@ export class CMSNDevice {
         this.window = window;
     }
 
-    async setup(listener) {
+    disconnect = ()=>{
+        if(this.bleDevice){
+            try{
+                this.bleDevice.gatt.disconnect();
+            } catch(e){}
+            this.bleDevice = null;
+            this.listener = null;
+        }
+        return this;
+    }
+
+    setup = async (listener) => {
+        if (this.bleDevice) {
+            console.log(`A device is already connected`);
+            return;
+        };
         this.listener = listener;
-        if (this.bleDevice != null) return;
         try {
             const isBluetoothAvailable = await navigator.bluetooth.getAvailability();
             console.log(`> Bluetooth is ${isBluetoothAvailable ? 'available' : 'unavailable'}`);
@@ -88,7 +102,7 @@ export class CMSNDevice {
                 globalDevice = this;
                 await this.connect();
                 //bleDevice.pair(true);
-                return bleDevice;
+                return this;
             }
 
         } catch (error) {

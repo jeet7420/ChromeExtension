@@ -133,28 +133,26 @@ const window = sandboxFrame.contentWindow;
 const device = new sdk.CMSNDevice(window);
 
 /**
- * @type {BluetoothDevice}
+ * @type {sdk.CMSNDevice}
  */
 let connectedDevice;
 
 const disconnect = async ()=>{
-    if(connectedDevice){
-        try{
-            connectedDevice.gatt.disconnect();
-        } catch(e){}
-        connectedDevice = undefined;
+    if(connectedDevice && typeof connectedDevice.disconnect === 'function'){
+        connectedDevice.disconnect();
     }
+    connectedDevice = null;
 }
 
 const connectNew = async ()=>{
     try{
         connectedDevice = await device.setup(listeners);
-        if(connectedDevice && connectedDevice.id){
+        if(connectedDevice && connectedDevice.bleDevice && connectedDevice.bleDevice.id){
             /**
              * We can't pass the whole connectedDevice object due to browser limitation (native code/security)
              * So, we take the id and name only
              */
-            const {id, name} = connectedDevice;
+            const {id, name} = connectedDevice.bleDevice;
             console.log("Device setup done", connectedDevice);
             const msg = {type: 'device-connected', payload: {id, name}};
             chrome.runtime.sendMessage(msg);
@@ -162,7 +160,7 @@ const connectNew = async ()=>{
             //device.pair(true);
             //window.postMessage('test message', `*`);
         } else {
-            throw new Error();
+            throw new Error("Device is null");
         }
 
     } catch(e){
