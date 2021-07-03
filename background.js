@@ -1,14 +1,14 @@
 // @ts-check
 
-// const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://localhost:8080");
 
-// ws.addEventListener("open", () => {
-//     console.log("Client Side Connection Established");
-// })
+ws.addEventListener("open", () => {
+    console.log("Client Side Connection Established");
+})
 
-// ws.addEventListener("message", ({data}) => {
-//     //console.log(data);
-// })
+ws.addEventListener("message", ({data}) => {
+    //console.log(data);
+})
 
 
 function buttonClicked(tab) {
@@ -26,7 +26,7 @@ function eventRaised(value, type) {
              + '  "userName" : "AUTOI"' 
              + '}';
     console.log(text);
-    //ws.send(text);
+    ws.send(text);
 }
 
 /**
